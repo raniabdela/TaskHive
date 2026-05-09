@@ -15,14 +15,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Global key used to validate the form state before submission
+  // Global key used to validate the form state before submission.
   final _formKey = GlobalKey<FormState>();
   
-  // Controllers to capture and manage user input for email and password
+  // Controllers to capture and manage user input for email and password.
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // Regular expression to ensure the email follows a standard format
+  // Regular expression to ensure the email follows a standard format.
   final RegExp _emailRegex = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
   );
