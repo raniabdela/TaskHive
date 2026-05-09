@@ -14,6 +14,6 @@ TaskHive is a Flutter-based mobile application designed to help teams organize p
 - Dashboard with task statistics and recent activity
 - Profile management system
 - Search and filter tasks
-- Real-time updates using Firebase
+- Real-time updates using Firebase.
 
 ---
