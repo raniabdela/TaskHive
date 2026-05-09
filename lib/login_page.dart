@@ -5,6 +5,8 @@ import '../dashboard.dart';
 import 'splashscreen.dart';
 import 'signup_page.dart';
 
+/// LoginPage handles the user authentication flow for TaskHive.
+/// It integrates with Firebase Auth to verify credentials.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -13,21 +15,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Global key used to validate the form state before submission
   final _formKey = GlobalKey<FormState>();
+  
+  // Controllers to capture and manage user input for email and password
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  // Regular expression to ensure the email follows a standard format
   final RegExp _emailRegex = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
   );
 
   @override
   void dispose() {
+    // Memory management: disposing controllers when the screen is closed
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
+  /// Primary function to handle the sign-in process.
+  /// It validates the input and communicates with the Firebase Authentication service.
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -35,17 +44,22 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     try {
+      // Calling Firebase API to sign in with email and password
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       if (!mounted) return;
+      
+      // Navigate to the dashboard (TaskHiveHomeShell) upon successful login
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const TaskHiveHomeShell()),
         (_) => false,
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
+      
+      // Error handling: mapping Firebase exception codes to user-friendly messages
       final message = switch (e.code) {
         'invalid-email' => 'Invalid email address.',
         'user-disabled' => 'This user account is disabled.',
@@ -56,6 +70,8 @@ class _LoginPageState extends State<LoginPage> {
           'Too many attempts. Please try again in a moment.',
         _ => e.message ?? 'Login failed. Please try again.',
       };
+      
+      // Display the error message to the user
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
@@ -67,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  /// Shared UI decoration for input fields to ensure design consistency
   InputDecoration _inputDecoration({
     required String label,
     required IconData icon,
@@ -110,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
           ),
           onPressed: () {
+            // Returns the user to the splash screen
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const SplashScreen()),
               (_) => false,
@@ -159,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            // Header Icon Container
                             Container(
                               width: 74,
                               height: 74,
@@ -191,6 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ?.copyWith(fontWeight: FontWeight.w900),
                             ),
                             const SizedBox(height: 18),
+                            // Email Entry Field
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
@@ -208,6 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             const SizedBox(height: 14),
+                            // Password Entry Field
                             TextFormField(
                               controller: _passwordController,
                               obscureText: true,
@@ -225,6 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             const SizedBox(height: 18),
+                            // Submission Button
                             SizedBox(
                               width: double.infinity,
                               height: 52,
@@ -234,6 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const SizedBox(height: 10),
+                            // Navigation to sign up screen
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
