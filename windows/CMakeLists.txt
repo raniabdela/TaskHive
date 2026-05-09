@@ -1,5 +1,11 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
+
+# CMake 4 removed compatibility with policy versions < 3.5. Some third-party
+# dependencies (notably Firebase C++ SDK) may still declare a very old
+# cmake_minimum_required; setting this allows configuring them with modern CMake.
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "" FORCE)
+
 project(commonw LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change

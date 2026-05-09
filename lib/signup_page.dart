@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'auth_store.dart';
-import 'dashboard.dart';
+import '../dashboard.dart';
 import 'login_page.dart';
 import 'splashscreen.dart';
 
@@ -35,13 +36,51 @@ class _SignupPageState extends State<SignupPage> {
   Future<void> _signup() async {
     if (!_formKey.currentState!.validate()) return;
 
-    await AuthStore.setAuthenticated(true);
-    if (!mounted) return;
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const DashboardPage()),
-      (_) => false,
-    );
+    try {
+      final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final uid = cred.user?.uid;
+      if (uid != null) {
+        await cred.user?.updateDisplayName(name);
+        await FirebaseAuth.instance.currentUser?.reload();
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'uid': uid,
+          'name': name,
+          'email': email,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      if (!mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const TaskHiveHomeShell()),
+        (_) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      final message = switch (e.code) {
+        'invalid-email' => 'Invalid email address.',
+        'email-already-in-use' => 'This email is already in use.',
+        'weak-password' => 'Password is too weak.',
+        'operation-not-allowed' => 'Email/password signup is not enabled.',
+        _ => e.message ?? 'Signup failed. Please try again.',
+      };
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Signup failed. Please try again.')),
+      );
+    }
   }
 
   InputDecoration _inputDecoration({
@@ -264,4 +303,3 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-

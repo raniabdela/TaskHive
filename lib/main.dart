@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import 'firebase_options.dart';
 import 'splashscreen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -13,10 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const primary = Color(0xFFFF7AAE); // baby pink
     return MaterialApp(
-      // Ensure this is EXACTLY here:
       debugShowCheckedModeBanner: false,
       title: 'TaskHive',
       theme: ThemeData(
+        textTheme: GoogleFonts.outfitTextTheme(ThemeData().textTheme),
         colorScheme: ColorScheme.fromSeed(seedColor: primary),
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFFFF7FA),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'auth_store.dart';
-import 'dashboard.dart';
+import '../dashboard.dart';
 import 'splashscreen.dart';
 import 'signup_page.dart';
 
@@ -31,13 +31,40 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
-    await AuthStore.setAuthenticated(true);
-    if (!mounted) return;
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const DashboardPage()),
-      (_) => false,
-    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      if (!mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const TaskHiveHomeShell()),
+        (_) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      final message = switch (e.code) {
+        'invalid-email' => 'Invalid email address.',
+        'user-disabled' => 'This user account is disabled.',
+        'user-not-found' => 'No account found for this email.',
+        'wrong-password' => 'Incorrect password.',
+        'invalid-credential' => 'Incorrect email or password.',
+        'too-many-requests' =>
+          'Too many attempts. Please try again in a moment.',
+        _ => e.message ?? 'Login failed. Please try again.',
+      };
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login failed. Please try again.')),
+      );
+    }
   }
 
   InputDecoration _inputDecoration({
