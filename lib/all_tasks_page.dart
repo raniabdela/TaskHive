@@ -52,7 +52,6 @@ class _AllTasksPageState extends State<AllTasksPage> {
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
             child: Column(
               children: [
-                // Search bar
                 Container(
                   decoration: BoxDecoration(
                     color: TH.white,
@@ -89,8 +88,6 @@ class _AllTasksPageState extends State<AllTasksPage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-
-                // Filter chips
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -142,6 +139,7 @@ class _AllTasksPageState extends State<AllTasksPage> {
       body: user == null
           ? const Center(child: Text('Please login to view tasks'))
           : StreamBuilder<QuerySnapshot>(
+              // Logic: Establishes a real-time connection to Firestore filtered by User ID
               stream: FirebaseFirestore.instance
                   .collection('tasks')
                   .where('userId', isEqualTo: user.uid)
@@ -158,7 +156,7 @@ class _AllTasksPageState extends State<AllTasksPage> {
 
                 final allTasks = snapshot.data?.docs ?? [];
 
-                // Local filter
+                // Logic: Applying client-side predicates for search queries and status chips
                 final filtered = allTasks.where((doc) {
                   final data = doc.data() as Map<String, dynamic>;
                   final title =
@@ -168,7 +166,7 @@ class _AllTasksPageState extends State<AllTasksPage> {
                       (_statusFilter == 'All' || status == _statusFilter);
                 }).toList();
 
-                // Sort: soonest deadline first, then newest
+                // Logic: Multi-tier sorting. Prioritizes deadlines, falls back to creation date.
                 filtered.sort((a, b) {
                   final aData = a.data() as Map<String, dynamic>;
                   final bData = b.data() as Map<String, dynamic>;
@@ -218,8 +216,6 @@ class _AllTasksPageState extends State<AllTasksPage> {
   }
 }
 
-// ─── Task Card ────────────────────────────────────────────────────────────────
-
 class _TaskCard extends StatelessWidget {
   const _TaskCard({
     required this.taskId,
@@ -252,6 +248,7 @@ class _TaskCard extends StatelessWidget {
     final pFaint = TH.priorityFaint(priority);
     final pBorder = TH.priorityBorder(priority);
 
+    // Logic: Determine overdue status if deadline has passed and task is incomplete
     final isOverdue = deadline != null &&
         deadline.isBefore(DateTime.now()) &&
         status != 'Done';
@@ -308,7 +305,6 @@ class _TaskCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    // Project
                     if (projectName.isNotEmpty) ...[
                       const Icon(Icons.folder_open_rounded,
                           size: 13, color: TH.blush),
@@ -327,8 +323,6 @@ class _TaskCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                     ],
-
-                    // Deadline
                     Icon(
                       Icons.event_rounded,
                       size: 13,
@@ -344,8 +338,6 @@ class _TaskCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-
-                    // Priority badge
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 9, vertical: 4),
@@ -373,8 +365,6 @@ class _TaskCard extends StatelessWidget {
     );
   }
 }
-
-// ─── Empty State ──────────────────────────────────────────────────────────────
 
 class _EmptyState extends StatelessWidget {
   const _EmptyState({required this.isSearching});
