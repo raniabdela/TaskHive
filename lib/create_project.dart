@@ -27,15 +27,19 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
   Future<void> _createProject() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
+    
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception('User not logged in');
+
+      // Logic: Persistence layer interaction adding a new project document linked to the current user
       await FirebaseFirestore.instance.collection('projects').add({
         'name': _nameController.text.trim(),
         'description': _descController.text.trim(),
         'createdAt': FieldValue.serverTimestamp(),
         'userId': user.uid,
       });
+
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
@@ -50,7 +54,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Soft rose — lighter than TH.blush
     const softRose = Color(0xFFBF5A6E);
     const lightRoseGrad = LinearGradient(
       colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
@@ -60,23 +63,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
     return Scaffold(
       backgroundColor: TH.canvas,
-      appBar: AppBar(
-        backgroundColor: TH.canvas,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: TH.ink),
-        titleSpacing: 0,
-        title: const Text(
-          'Create Project',
-          style: TextStyle(
-            fontFamily: 'Georgia',
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: TH.ink,
-            letterSpacing: -0.5,
-          ),
-        ),
-      ),
+      appBar: TH.appBar(context, title: 'Create Project'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(22, 10, 22, 48),
         child: Form(
@@ -84,7 +71,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Soft hero header
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
@@ -142,12 +128,10 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                 ),
               ),
               const SizedBox(height: 32),
-
-              // Section label
               const _SectionLabel(text: 'Project Details'),
               const SizedBox(height: 16),
-
-              // Project Name field
+              
+              // Logic: Utilizing centralized TH input styling for visual consistency
               TextFormField(
                 controller: _nameController,
                 style: const TextStyle(
@@ -156,32 +140,10 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),
-                decoration: InputDecoration(
-                  labelText: 'Project Name',
-                  labelStyle: const TextStyle(
-                      color: TH.ink3, fontWeight: FontWeight.w500),
-                  prefixIcon:
-                      const Icon(Icons.folder_rounded, color: softRose),
-                  filled: true,
-                  fillColor: TH.surface1,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: TH.ink4),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: TH.ink4),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: softRose, width: 1.8),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: TH.crimson, width: 1.2),
-                  ),
+                decoration: TH.inputDecoration(
+                  context,
+                  label: 'Project Name',
+                  icon: Icons.folder_rounded,
                 ),
                 validator: (val) {
                   if (val == null || val.trim().isEmpty) {
@@ -191,8 +153,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                 },
               ),
               const SizedBox(height: 18),
-
-              // Description field
+              
               TextFormField(
                 controller: _descController,
                 maxLines: 4,
@@ -201,83 +162,21 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   color: TH.ink,
                   fontSize: 14,
                 ),
-                decoration: InputDecoration(
-                  labelText: 'Description (Optional)',
-                  alignLabelWithHint: true,
-                  labelStyle: const TextStyle(
-                      color: TH.ink3, fontWeight: FontWeight.w500),
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.only(bottom: 60),
-                    child: Icon(Icons.description_rounded, color: softRose),
-                  ),
-                  filled: true,
-                  fillColor: TH.surface1,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: TH.ink4),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: TH.ink4),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: softRose, width: 1.8),
-                  ),
+                decoration: TH.inputDecoration(
+                  context,
+                  label: 'Description (Optional)',
+                  icon: Icons.description_rounded,
+                  maxLines: 4,
                 ),
               ),
               const SizedBox(height: 36),
 
-              // Create button
-              SizedBox(
-                height: 54,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: lightRoseGrad,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: softRose.withValues(alpha: 0.35),
-                        blurRadius: 14,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _createProject,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                    ),
-                    child: _isLoading
-                        ? const SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(
-                                color: Colors.white, strokeWidth: 2.5),
-                          )
-                        : const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add_rounded, size: 20),
-                              SizedBox(width: 8),
-                              Text(
-                                'Create Project',
-                                style: TextStyle(
-                                  fontFamily: 'Georgia',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                  ),
-                ),
+              // Logic: Primary submission action with global loading state handling
+              TH.primaryButton(
+                label: 'Create Project',
+                onPressed: _createProject,
+                isLoading: _isLoading,
+                icon: Icons.add_rounded,
               ),
             ],
           ),
