@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 
-/// Shared design system for TaskHive inner pages.
-/// Mirrors the _TH palette used in dashboard.dart.
+/// TH (TaskHive) defines the central design system for the application.
+/// It provides a unified palette, shared decorations, and consistent UI components
+/// to ensure visual harmony between the dashboard and inner pages.
 class TH {
-  // Canvas & surfaces
+  // Canvas & surfaces: Defining the base layers of the application UI
   static const canvas = Color(0xFFFDFBFA);
   static const white = Color(0xFFFFFFFF);
   static const surface1 = Color(0xFFF8F5F3);
   static const surface2 = Color(0xFFF2EDEB);
 
-  // Blush — brand signature
+  // Brand Colors: Using 'Blush' as the signature primary brand identity
   static const blush = Color(0xFFCB6679);
   static const blushLight = Color(0xFFE9A0AB);
   static const blushFaint = Color(0xFFFAEFF1);
   static const blushBorder = Color(0xFFEDD3D8);
 
-  // Ink — warm charcoal
+  // Typography Colors: 'Ink' variants provide a high-contrast warm charcoal scale
   static const ink = Color(0xFF211418);
   static const ink2 = Color(0xFF5A3D44);
   static const ink3 = Color(0xFF9A7E86);
   static const ink4 = Color(0xFFD8C8CB);
 
-  // Semantic
+  // Semantic Colors: Logic-based colors for Priority and Status indicators
   static const green = Color(0xFF2E8B65);
   static const greenFaint = Color(0xFFE4F5EE);
   static const greenBorder = Color(0xFFB4DDD0);
@@ -32,14 +33,13 @@ class TH {
   static const crimsonFaint = Color(0xFFFBE9EC);
   static const crimsonBorder = Color(0xFFE5B0B8);
 
-  // Gradients
+  // Gradients & Shadows: Adding depth and elevation to interactive elements
   static const blushGrad = LinearGradient(
     colors: [Color(0xFFD97080), Color(0xFFCB6679)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  // Shadows
   static List<BoxShadow> cardShadow = [
     BoxShadow(
       color: const Color(0xFF3D1F26).withValues(alpha: 0.06),
@@ -61,7 +61,7 @@ class TH {
     ),
   ];
 
-  // Helpers
+  /// Standardizes card design across all list views and containers.
   static BoxDecoration cardDecoration({
     Color? color,
     double radius = 20,
@@ -74,6 +74,8 @@ class TH {
         boxShadow: cardShadow,
       );
 
+  /// Logic: Centralized input decoration to ensure all FormFields have a 
+  /// consistent look and handle multi-line icon alignment.
   static InputDecoration inputDecoration(
     BuildContext context, {
     required String label,
@@ -117,7 +119,7 @@ class TH {
         ),
       );
 
-  /// A styled AppBar consistent with the dashboard.
+  /// Styled AppBar that integrates perfectly with the scaffold canvas.
   static AppBar appBar(
     BuildContext context, {
     required String title,
@@ -145,7 +147,7 @@ class TH {
         actions: actions,
       );
 
-  /// Priority colour helper
+  // Logic: Mapping semantic task priorities to specific theme colors
   static Color priorityColor(String? p) {
     switch ((p ?? '').toLowerCase()) {
       case 'high':
@@ -185,7 +187,7 @@ class TH {
     }
   }
 
-  /// Status colour
+  // Logic: Mapping task status states to brand and semantic colors
   static Color statusColor(String? s) {
     switch ((s ?? '').toLowerCase()) {
       case 'done':
@@ -212,7 +214,8 @@ class TH {
     }
   }
 
-  /// Primary action button
+  /// Logic: Reusable button component that applies the brand gradient 
+  /// and handles loading states globally.
   static Widget primaryButton({
     required String label,
     required VoidCallback? onPressed,
