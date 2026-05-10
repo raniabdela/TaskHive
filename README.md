@@ -80,10 +80,12 @@ flutter run
 
 Group Project – Flutter Course
 Developed by: @raniabdela
+              @LeulAshenafi
+              @semretgeb
+              @LidyaSamson
 
 ---
 
 ## 📄 License
 
 This project is for educational purposes only.
-
