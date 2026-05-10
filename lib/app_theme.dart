@@ -9,23 +9,23 @@ class TH {
   static const surface1 = Color(0xFFF8F5F3);
   static const surface2 = Color(0xFFF2EDEB);
 
-  // Blush — brand signature
+ 
   static const blush = Color(0xFFCB6679);
   static const blushLight = Color(0xFFE9A0AB);
   static const blushFaint = Color(0xFFFAEFF1);
   static const blushBorder = Color(0xFFEDD3D8);
 
-  // Soft Rose - Premium variant
+  
   static const softRose = Color(0xFFBF5A6E);
   static const softRoseLight = Color(0xFFD4758A);
 
-  // Ink — warm charcoal
+  
   static const ink = Color(0xFF211418);
   static const ink2 = Color(0xFF5A3D44);
   static const ink3 = Color(0xFF9A7E86);
   static const ink4 = Color(0xFFD8C8CB);
 
-  // Semantic
+  
   static const green = Color(0xFF2E8B65);
   static const greenFaint = Color(0xFFE4F5EE);
   static const greenBorder = Color(0xFFB4DDD0);
@@ -36,7 +36,7 @@ class TH {
   static const crimsonFaint = Color(0xFFFBE9EC);
   static const crimsonBorder = Color(0xFFE5B0B8);
 
-  // Gradients
+  
   static const blushGrad = LinearGradient(
     colors: [Color(0xFFD97080), Color(0xFFCB6679)],
     begin: Alignment.topLeft,
@@ -195,7 +195,7 @@ class TH {
     }
   }
 
-  /// Status colour
+  
   static Color statusColor(String? s) {
     switch ((s ?? '').toLowerCase()) {
       case 'done':
