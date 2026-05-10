@@ -79,10 +79,16 @@ flutter run
 ## 👨‍💻 Authors
 
 Group Project – Flutter Course
-Developed by: @raniabdela
-              @LeulAshenafi
-              @semretgeb
-              @LidyaSamson
+
+Developed by: 
+
+[@raniabdela](https://github.com/raniabdela)
+
+[@LeulAshenafi](https://github.com/LeulAshenafi)
+
+[@Semretgeb](https://github.com/semretgeb)
+
+[@LidyaSamson](https://github.com/lidyaSammm)
 
 ---
 
