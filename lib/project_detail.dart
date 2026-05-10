@@ -181,7 +181,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage>
   }
 }
 
-// ─── Task List per status ─────────────────────────────────────────────────────
+//Task List per status
 
 class _TaskListView extends StatelessWidget {
   const _TaskListView({
@@ -233,7 +233,7 @@ class _TaskListView extends StatelessWidget {
   }
 }
 
-// ─── Task Card ────────────────────────────────────────────────────────────────
+// Task Card 
 
 class _TaskCard extends StatelessWidget {
   const _TaskCard({
@@ -334,7 +334,7 @@ class _TaskCard extends StatelessWidget {
   }
 }
 
-// ─── Empty Column ─────────────────────────────────────────────────────────────
+//Empty Column
 
 class _EmptyColumn extends StatelessWidget {
   const _EmptyColumn({required this.status});
@@ -385,7 +385,7 @@ class _EmptyColumn extends StatelessWidget {
   }
 }
 
-// ─── Tab Bar Delegate ─────────────────────────────────────────────────────────
+//Tab Bar Delegate
 
 class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   _TabBarDelegate(this.tabBar);
@@ -400,7 +400,7 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: const Color(0xFFBF5A6E), // This ensures the background behind the rounded corners is pink
+      color: const Color(0xFFBF5A6E), 
       child: Container(
         decoration: const BoxDecoration(
           color: TH.canvas,
