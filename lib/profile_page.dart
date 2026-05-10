@@ -115,8 +115,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ── Change Password ──────────────────────────────────────────────────────
-  // ── NEW LOGIC: Re-authenticate and Update ──
+  //Change Password
+  //Re-authenticate and Update
   Future<void> _handlePasswordUpdate(
     String currentPassword,
     String newPassword,
@@ -149,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // ── NEW UI: The Popup Dialog ──
+  //The Popup Dialog
   void _showPasswordPopup() {
     final TextEditingController currentController = TextEditingController();
     final TextEditingController newController = TextEditingController();
@@ -232,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ── Notifications (upcoming/overdue tasks) ────────────────────────────────
+  //Notifications
   Future<void> _showNotifications() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
@@ -296,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          // ── Curved Hero SliverAppBar ──────────────────────────────────
+          //Curved Hero SliverAppBar
           SliverAppBar(
             expandedHeight: 280,
             pinned: true,
@@ -495,14 +495,14 @@ class _ProfilePageState extends State<ProfilePage> {
             iconTheme: const IconThemeData(color: Colors.white),
           ),
 
-          // ── Body Content ──────────────────────────────────────────────
+          // Body Content 
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 48),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // ── Quick Info Tiles ──────────────────────────────────
+                  //Quick Info Tiles
                   Row(
                     children: [
                       _QuickTile(
@@ -526,7 +526,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
 
-                  // ── Personal Info Card ────────────────────────────────
+                  //Personal Info Card
                   _SectionHeader(
                     label: 'Personal Information',
                     trailing: GestureDetector(
@@ -685,7 +685,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 28),
 
-                  // ── Account Actions ───────────────────────────────────
+                  //Account Actions
                   const _SectionHeader(label: 'Account'),
                   const SizedBox(height: 12),
 
@@ -799,9 +799,9 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-  // ... existing code ...
+ 
 
-  // This should be the last thing before the final closing brace } of the State class
+  
   Widget _buildPopupField(TextEditingController controller, String hint) {
     return TextField(
       controller: controller,
@@ -810,13 +810,13 @@ class _ProfilePageState extends State<ProfilePage> {
         fontFamily: 'Georgia',
         color: TH.ink,
         fontSize: 15,
-        fontWeight: FontWeight.w400, // Not bold
+        fontWeight: FontWeight.w400, 
       ),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: TH.ink4, fontSize: 13),
         filled: true,
-        fillColor: Color(0xFFF5F5F5), // Light grey if TH.ink6 is missing
+        fillColor: Color(0xFFF5F5F5), 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -830,7 +830,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 } // This is the end of _ProfilePageState
 
-// ─── Quick Tile ───────────────────────────────────────────────────────────────
+
 
 class _QuickTile extends StatelessWidget {
   const _QuickTile({
@@ -903,7 +903,7 @@ class _QuickTile extends StatelessWidget {
   }
 }
 
-// ─── Section Header ───────────────────────────────────────────────────────────
+//Section Header
 
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.label, this.trailing});
@@ -924,12 +924,12 @@ class _SectionHeader extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Text(
-          label, // Removed .toUpperCase() for a cleaner Georgia look
+          label, 
           style: const TextStyle(
-            fontFamily: 'Georgia', // Matching the top profile text
+            fontFamily: 'Georgia', 
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: TH.ink, // Black text
+            color: TH.ink, 
             letterSpacing: -0.2,
           ),
         ),
@@ -940,7 +940,7 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-// ─── Info Row ─────────────────────────────────────────────────────────────────
+
 
 class _InfoRow extends StatelessWidget {
   const _InfoRow({
@@ -988,13 +988,13 @@ class _InfoRow extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 // This ensures any text passed as 'child' (Name/Email)
-                // uses the Georgia font without the bold weight.
+                
                 DefaultTextStyle(
                   style: const TextStyle(
                     fontFamily: 'Georgia',
                     fontSize: 15,
-                    fontWeight: FontWeight.w400, // Not bold
-                    color: TH.ink, // Black text
+                    fontWeight: FontWeight.w400, 
+                    color: TH.ink, 
                   ),
                   child: child,
                 ),
@@ -1007,7 +1007,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-// ─── Action Row ───────────────────────────────────────────────────────────────
+
 
 class _ActionRow extends StatelessWidget {
   const _ActionRow({
@@ -1069,7 +1069,7 @@ class _ActionRow extends StatelessWidget {
   }
 }
 
-// ─── Notifications Bottom Sheet ───────────────────────────────────────────────
+
 
 class _NotificationsSheet extends StatelessWidget {
   const _NotificationsSheet({required this.overdue, required this.upcoming});
