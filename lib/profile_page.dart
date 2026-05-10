@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: TH.ink3)),
+            child: const Text('Cancel', style: TextStyle(fontFamily: 'Georgia', fontWeight: FontWeight.w700, color: TH.ink)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -176,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
               );
               _handlePasswordUpdate(currentController.text, newController.text);
             },
-            child: const Text('Update', style: TextStyle(color: Colors.white)),
+            child: const Text('Update', style: TextStyle(fontFamily: 'Georgia', fontWeight: FontWeight.w700, color: Colors.white)),
           ),
         ],
       ),
@@ -649,13 +649,58 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Column(
                       children: [
-                        _ActionRow(
-                          icon: Icons.notifications_rounded,
-                          label: 'Notifications',
-                          isFirst: true,
-                          color: const Color(0xFFBF5A6E),
-                          faint: TH.blushFaint,
-                          onTap: _showNotifications,
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('tasks')
+                              .where('userId', isEqualTo: user.uid)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            int count = 0;
+                            if (snapshot.hasData) {
+                              final now = DateTime.now();
+                              final in7Days = now.add(const Duration(days: 7));
+                              for (var doc in snapshot.data!.docs) {
+                                final data = doc.data() as Map<String, dynamic>;
+                                final status = data['status'] ?? '';
+                                if (status == 'Done') continue;
+                                final deadline = data['deadline'];
+                                if (deadline is! Timestamp) continue;
+                                final date = deadline.toDate();
+                                if (date.isBefore(in7Days)) {
+                                  count++;
+                                }
+                              }
+                            }
+                            return _ActionRow(
+                              icon: Icons.notifications_rounded,
+                              label: 'Notifications',
+                              isFirst: true,
+                              color: const Color(0xFFBF5A6E),
+                              faint: TH.blushFaint,
+                              onTap: _showNotifications,
+                              trailingWidget: count > 0
+                                  ? Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: TH.blushFaint,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                            color: const Color(0xFFBF5A6E)
+                                                .withValues(alpha: 0.3)),
+                                      ),
+                                      child: Text(
+                                        '$count',
+                                        style: const TextStyle(
+                                          color: Color(0xFFBF5A6E),
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            );
+                          },
                         ),
                         Divider(
                           height: 1,
@@ -925,12 +970,14 @@ class _ActionRow extends StatelessWidget {
     this.isFirst = false,
     this.isLast = false,
     this.showChevron = true,
+    this.trailingWidget,
   });
   final IconData icon;
   final String label;
   final Color color, faint;
   final VoidCallback onTap;
   final bool isFirst, isLast, showChevron;
+  final Widget? trailingWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -953,13 +1000,17 @@ class _ActionRow extends StatelessWidget {
             Text(
               label,
               style: const TextStyle(
-                fontFamily: 'Georgia', // Matching Profile styling
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: TH.ink, // Black text
+                fontFamily: 'Georgia',
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: TH.ink,
               ),
             ),
             const Spacer(),
+            if (trailingWidget != null) ...[
+              trailingWidget!,
+              const SizedBox(width: 8),
+            ],
             if (showChevron)
               Icon(Icons.chevron_right_rounded, color: TH.ink4, size: 20),
           ],
