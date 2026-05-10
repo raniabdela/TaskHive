@@ -151,7 +151,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              color: softRose, // Background for the corners
+              color: softRose, 
               child: Container(
                 decoration: const BoxDecoration(
                   color: TH.canvas,
@@ -201,7 +201,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       ),
                       const SizedBox(height: 28),
 
-                      // Task Title
+                      
                       TextFormField(
                         controller: _titleController,
                         style: const TextStyle(
@@ -259,7 +259,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Description
+                      
                       TextFormField(
                         controller: _descController,
                         maxLines: 4,
@@ -316,7 +316,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Deadline Picker
+                      
                       GestureDetector(
                         onTap: _pickDeadline,
                         child: Container(
