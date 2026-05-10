@@ -58,6 +58,55 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _logout() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: TH.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Text(
+          'Log Out',
+          style: TextStyle(
+            fontFamily: 'Georgia',
+            fontWeight: FontWeight.w700,
+            color: TH.ink,
+            fontSize: 18,
+          ),
+        ),
+        content: const Text(
+          'Are you sure you want to log out of your account?',
+          style: TextStyle(color: TH.ink2, fontSize: 14, height: 1.6),
+        ),
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: TH.ink2,
+              side: const BorderSide(color: TH.ink4),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: const Text('Cancel',
+                style: TextStyle(fontFamily: 'Georgia', fontWeight: FontWeight.w600)),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: TH.crimson,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: const Text('Log Out',
+                style: TextStyle(fontFamily: 'Georgia', fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
     await FirebaseAuth.instance.signOut();
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
