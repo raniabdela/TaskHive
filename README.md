@@ -44,4 +44,46 @@ The app uses Firebase services:
   - subcollection: comments
 
 Each task belongs to a project and can have multiple comments for collaboration.
+---
+
+## 🔧 Tech Stack
+
+- Flutter (Dart)
+- Firebase Authentication
+- Firebase Firestore
+- Firebase Storage 
+- Material Design UI
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+git clone https://github.com/raniabdela/taskhive.git
+
+### 2. Install dependencies
+
+flutter pub get
+
+### 3. Connect Firebase
+- Add google-services.json for Android
+- Configure Firebase project in Flutter
+
+### 4. Run the app
+
+flutter run
+
+---
+
+## 👨‍💻 Authors
+
+Group Project – Flutter Course
+Developed by: @raniabdela
+
+---
+
+## 📄 License
+
+This project is for educational purposes only.
 
