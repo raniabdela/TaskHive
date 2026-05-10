@@ -90,186 +90,315 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    const softRose = Color(0xFFBF5A6E);
+    const lightRoseGrad = LinearGradient(
+      colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
     return Scaffold(
       backgroundColor: TH.canvas,
-      appBar: TH.appBar(context, title: 'Create Task'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(22, 24, 22, 40),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Header card
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: TH.blushGrad,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: TH.floatShadow,
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 180,
+            pinned: true,
+            backgroundColor: softRose,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            iconTheme: const IconThemeData(color: Colors.white),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              title: const Text(
+                'New Task',
+                style: TextStyle(
+                  fontFamily: 'Georgia',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 19,
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.task_alt_rounded,
-                        color: Colors.white, size: 28),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(decoration: const BoxDecoration(gradient: lightRoseGrad)),
+                  Positioned(
+                    top: -30,
+                    right: -30,
+                    child: Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withValues(alpha: 0.08),
+                      ),
+                    ),
+                  ),
+                  const Center(
+                    child: Icon(Icons.task_alt_rounded,
+                        color: Colors.white12, size: 80),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: softRose, // Background for the corners
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: TH.canvas,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, -2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 60),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
                         children: [
-                          const Text(
-                            'New Task',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 16,
-                              fontFamily: 'Georgia',
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            widget.projectName,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12.5,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Task Details',
+                                  style: TextStyle(
+                                    fontFamily: 'Georgia',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: TH.ink,
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Project: ${widget.projectName}',
+                                  style: const TextStyle(color: TH.ink3, fontSize: 13),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 28),
+                      const SizedBox(height: 28),
 
-              // Task Title
-              TextFormField(
-                controller: _titleController,
-                style: const TextStyle(
-                    color: TH.ink, fontWeight: FontWeight.w600),
-                decoration: TH.inputDecoration(
-                  context,
-                  label: 'Task Title',
-                  icon: Icons.title_rounded,
-                ),
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 18),
+                      // Task Title
+                      TextFormField(
+                        controller: _titleController,
+                        style: const TextStyle(
+                            color: TH.ink, fontWeight: FontWeight.w600, fontSize: 15),
+                        decoration: InputDecoration(
+                          labelText: 'Task Title',
+                          labelStyle: const TextStyle(color: TH.ink3, fontWeight: FontWeight.w500),
+                          prefixIcon: const Icon(Icons.title_rounded, color: softRose),
+                          filled: true,
+                          fillColor: TH.surface1,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                          ),
+                        ),
+                        validator: (val) {
+                          if (val == null || val.trim().isEmpty) {
+                            return 'Please enter a title';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
 
-              // Description
-              TextFormField(
-                controller: _descController,
-                maxLines: 4,
-                style: const TextStyle(color: TH.ink),
-                decoration: TH.inputDecoration(
-                  context,
-                  label: 'Description (Optional)',
-                  icon: Icons.description_rounded,
-                  maxLines: 4,
-                ),
-              ),
-              const SizedBox(height: 18),
-
-              // Deadline Picker
-              GestureDetector(
-                onTap: _pickDeadline,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 16),
-                  decoration: BoxDecoration(
-                    color: TH.surface1,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: TH.ink4),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.event_rounded,
-                          color: TH.blush, size: 20),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Deadline',
-                              style: TextStyle(
-                                  color: TH.ink3,
-                                  fontSize: 11.5,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(height: 3),
-                            Text(
-                              _selectedDate == null
-                                  ? 'Tap to set a deadline'
-                                  : DateFormat('MMM d, yyyy')
-                                      .format(_selectedDate!),
-                              style: TextStyle(
-                                color: _selectedDate == null
-                                    ? TH.ink3
-                                    : TH.ink,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
+                      // Description
+                      TextFormField(
+                        controller: _descController,
+                        maxLines: 4,
+                        style: const TextStyle(color: TH.ink, fontSize: 14),
+                        decoration: InputDecoration(
+                          labelText: 'Description (Optional)',
+                          alignLabelWithHint: true,
+                          labelStyle: const TextStyle(color: TH.ink3, fontWeight: FontWeight.w500),
+                          prefixIcon: const Padding(
+                            padding: EdgeInsets.only(bottom: 60),
+                            child: Icon(Icons.description_rounded, color: softRose),
+                          ),
+                          filled: true,
+                          fillColor: TH.surface1,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                          ),
                         ),
                       ),
-                      Icon(
-                        _selectedDate != null
-                            ? Icons.check_circle_rounded
-                            : Icons.chevron_right_rounded,
-                        color: _selectedDate != null ? TH.green : TH.ink3,
+                      const SizedBox(height: 20),
+
+                      // Deadline Picker
+                      GestureDetector(
+                        onTap: _pickDeadline,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 16),
+                          decoration: BoxDecoration(
+                            color: TH.surface1,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: TH.ink4),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.event_rounded,
+                                  color: softRose, size: 20),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Deadline',
+                                      style: TextStyle(
+                                          color: TH.ink3,
+                                          fontSize: 11.5,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      _selectedDate == null
+                                          ? 'Tap to set a deadline'
+                                          : DateFormat('MMM d, yyyy')
+                                              .format(_selectedDate!),
+                                      style: TextStyle(
+                                        color: _selectedDate == null
+                                            ? TH.ink3
+                                            : TH.ink,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                _selectedDate != null
+                                    ? Icons.check_circle_rounded
+                                    : Icons.chevron_right_rounded,
+                                color: _selectedDate != null ? TH.green : TH.ink3,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Priority & Status row
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _StyledDropdown(
+                              label: 'Priority',
+                              value: _priority,
+                              items: _priorities,
+                              icon: Icons.flag_rounded,
+                              onChanged: (val) {
+                                if (val != null) setState(() => _priority = val);
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: _StyledDropdown(
+                              label: 'Status',
+                              value: _status,
+                              items: _statuses,
+                              icon: Icons.check_circle_outline_rounded,
+                              onChanged: (val) {
+                                if (val != null) setState(() => _status = val);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+
+                      SizedBox(
+                        height: 54,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: lightRoseGrad,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: softRose.withValues(alpha: 0.35),
+                                blurRadius: 14,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _saveTask,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16)),
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white, strokeWidth: 2.5),
+                                  )
+                                : const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.save_rounded, size: 20),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Save Task',
+                                        style: TextStyle(
+                                          fontFamily: 'Georgia',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 18),
-
-              // Priority & Status row
-              Row(
-                children: [
-                  Expanded(
-                    child: _StyledDropdown(
-                      label: 'Priority',
-                      value: _priority,
-                      items: _priorities,
-                      icon: Icons.flag_rounded,
-                      onChanged: (val) {
-                        if (val != null) setState(() => _priority = val);
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: _StyledDropdown(
-                      label: 'Status',
-                      value: _status,
-                      items: _statuses,
-                      icon: Icons.check_circle_outline_rounded,
-                      onChanged: (val) {
-                        if (val != null) setState(() => _status = val);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 36),
-
-              TH.primaryButton(
-                label: 'Save Task',
-                onPressed: _saveTask,
-                isLoading: _isLoading,
-                icon: Icons.save_rounded,
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -41,130 +41,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TH.canvas,
-      appBar: AppBar(
-        backgroundColor: TH.canvas,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: TH.ink),
-        titleSpacing: 0,
-        title: const Text(
-          'Project Details',
-          style: TextStyle(
-            fontFamily: 'Georgia',
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: TH.ink,
-            letterSpacing: -0.5,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(160),
-          child: Column(
-            children: [
-              // Hero Card
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFBF5A6E).withValues(alpha: 0.35),
-                      blurRadius: 16,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.5)),
-                      ),
-                      child: const Icon(Icons.folder_special_rounded,
-                          color: Colors.white, size: 24),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.projectName,
-                            style: const TextStyle(
-                              fontFamily: 'Georgia',
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              letterSpacing: -0.3,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            'Manage your tasks and progress.',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              // TabBar
-              Container(
-                margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                decoration: BoxDecoration(
-                  color: TH.surface1,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: TH.ink4),
-                ),
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: _statuses
-                      .map((s) => Tab(
-                            child: Text(
-                              s,
-                              style: const TextStyle(
-                                fontSize: 12.5,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                  indicator: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(11),
-                    boxShadow: TH.floatShadow,
-                  ),
-                  indicatorPadding: const EdgeInsets.all(3),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: TH.ink2,
-                  dividerColor: Colors.transparent,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       floatingActionButton: GestureDetector(
         onTap: () => Navigator.push(
           context,
@@ -183,27 +59,123 @@ class _ProjectDetailPageState extends State<ProjectDetailPage>
             shape: BoxShape.circle,
             boxShadow: TH.floatShadow,
           ),
-          child:
-              const Icon(Icons.add_rounded, color: Colors.white, size: 28),
+          child: const Icon(Icons.add_rounded, color: Colors.white, size: 28),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: _statuses
-            .map((status) => _TaskListView(
-                  projectId: widget.projectId,
-                  status: status,
-                  onTap: (taskId, data) => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => TaskDetailPage(
-                        taskId: taskId,
-                        taskData: data,
+      body: NestedScrollView(
+        physics: const BouncingScrollPhysics(),
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              expandedHeight: 160,
+              pinned: true,
+              backgroundColor: const Color(0xFFBF5A6E),
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              iconTheme: const IconThemeData(color: Colors.white),
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                titlePadding: const EdgeInsets.only(bottom: 16),
+                title: Text(
+                  widget.projectName,
+                  style: const TextStyle(
+                    fontFamily: 'Georgia',
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
+                ),
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
                     ),
+                    Positioned(
+                      top: -30,
+                      right: -30,
+                      child: Container(
+                        width: 140,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.08),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -20,
+                      left: -20,
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.08),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _TabBarDelegate(
+                TabBar(
+                  controller: _tabController,
+                  tabs: _statuses
+                      .map((s) => Tab(
+                            child: Text(
+                              s,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  indicator: const UnderlineTabIndicator(
+                    borderSide: BorderSide(color: Color(0xFFBF5A6E), width: 3),
+                    insets: EdgeInsets.symmetric(horizontal: 16),
                   ),
-                ))
-            .toList(),
+                  labelColor: const Color(0xFFBF5A6E),
+                  unselectedLabelColor: TH.ink3,
+                  unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                  dividerColor: Colors.transparent,
+                  overlayColor: WidgetStateProperty.all(const Color(0xFFBF5A6E).withValues(alpha: 0.1)),
+                ),
+              ),
+            ),
+          ];
+        },
+        body: Container(
+          color: TH.canvas,
+          child: TabBarView(
+            controller: _tabController,
+            children: _statuses
+                .map((status) => _TaskListView(
+                      projectId: widget.projectId,
+                      status: status,
+                      onTap: (taskId, data) => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TaskDetailPage(
+                            taskId: taskId,
+                            taskData: data,
+                          ),
+                        ),
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
       ),
     );
   }
@@ -346,7 +318,7 @@ class _TaskCard extends StatelessWidget {
                           size: 13, color: TH.ink3),
                       const SizedBox(width: 5),
                       Text(
-                        deadlineStr,
+                        'Due Date: $deadlineStr',
                         style: const TextStyle(
                             fontSize: 12, color: TH.ink3, fontWeight: FontWeight.w600),
                       ),
@@ -410,5 +382,46 @@ class _EmptyColumn extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+// ─── Tab Bar Delegate ─────────────────────────────────────────────────────────
+
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  _TabBarDelegate(this.tabBar);
+  final TabBar tabBar;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height + 24;
+  @override
+  double get maxExtent => tabBar.preferredSize.height + 24;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: const Color(0xFFBF5A6E), // This ensures the background behind the rounded corners is pink
+      child: Container(
+        decoration: const BoxDecoration(
+          color: TH.canvas,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8,
+              offset: Offset(0, -2),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.only(top: 12, bottom: 8),
+        alignment: Alignment.center,
+        child: tabBar,
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(_TabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar;
   }
 }

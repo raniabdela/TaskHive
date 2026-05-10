@@ -27,19 +27,15 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
   Future<void> _createProject() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
-    
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) throw Exception('User not logged in');
-
-      // Logic: Persistence layer interaction adding a new project document linked to the current user
       await FirebaseFirestore.instance.collection('projects').add({
         'name': _nameController.text.trim(),
         'description': _descController.text.trim(),
         'createdAt': FieldValue.serverTimestamp(),
         'userId': user.uid,
       });
-
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
@@ -63,156 +59,218 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
     return Scaffold(
       backgroundColor: TH.canvas,
-      appBar: TH.appBar(context, title: 'Create Project'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(22, 10, 22, 48),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  gradient: lightRoseGrad,
-                  borderRadius: BorderRadius.circular(22),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 180,
+            pinned: true,
+            backgroundColor: softRose,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            iconTheme: const IconThemeData(color: Colors.white),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              title: const Text(
+                'New Project',
+                style: TextStyle(
+                  fontFamily: 'Georgia',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 19,
+                ),
+              ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(decoration: const BoxDecoration(gradient: lightRoseGrad)),
+                  Positioned(
+                    top: -30,
+                    right: -30,
+                    child: Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withValues(alpha: 0.08),
+                      ),
+                    ),
+                  ),
+                  const Center(
+                    child: Icon(Icons.auto_awesome_motion_rounded,
+                        color: Colors.white12, size: 80),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: softRose, // Background for the corners
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: TH.canvas,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                   boxShadow: [
                     BoxShadow(
-                      color: softRose.withValues(alpha: 0.35),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, -2),
                     ),
                   ],
                 ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.5)),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 60),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Project Details',
+                        style: TextStyle(
+                          fontFamily: 'Georgia',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: TH.ink,
+                          letterSpacing: -0.4,
+                        ),
                       ),
-                      child: const Icon(Icons.folder_special_rounded,
-                          color: Colors.white, size: 26),
-                    ),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'New Project',
-                            style: TextStyle(
-                              fontFamily: 'Georgia',
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              letterSpacing: -0.3,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Fill in the details to get started.',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.5,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Define the core of your new workspace.',
+                        style: TextStyle(color: TH.ink3, fontSize: 13),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              const _SectionLabel(text: 'Project Details'),
-              const SizedBox(height: 16),
-              
-              // Logic: Utilizing centralized TH input styling for visual consistency
-              TextFormField(
-                controller: _nameController,
-                style: const TextStyle(
-                  fontFamily: 'Georgia',
-                  color: TH.ink,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                ),
-                decoration: TH.inputDecoration(
-                  context,
-                  label: 'Project Name',
-                  icon: Icons.folder_rounded,
-                ),
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty) {
-                    return 'Please enter a project name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 18),
-              
-              TextFormField(
-                controller: _descController,
-                maxLines: 4,
-                style: const TextStyle(
-                  fontFamily: 'Georgia',
-                  color: TH.ink,
-                  fontSize: 14,
-                ),
-                decoration: TH.inputDecoration(
-                  context,
-                  label: 'Description (Optional)',
-                  icon: Icons.description_rounded,
-                  maxLines: 4,
-                ),
-              ),
-              const SizedBox(height: 36),
+                      const SizedBox(height: 28),
 
-              // Logic: Primary submission action with global loading state handling
-              TH.primaryButton(
-                label: 'Create Project',
-                onPressed: _createProject,
-                isLoading: _isLoading,
-                icon: Icons.add_rounded,
+                      TextFormField(
+                        controller: _nameController,
+                        style: const TextStyle(
+                          fontFamily: 'Georgia',
+                          color: TH.ink,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'Project Name',
+                          labelStyle: const TextStyle(
+                              color: TH.ink3, fontWeight: FontWeight.w500),
+                          prefixIcon: const Icon(Icons.folder_rounded, color: softRose),
+                          filled: true,
+                          fillColor: TH.surface1,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                          ),
+                        ),
+                        validator: (val) {
+                          if (val == null || val.trim().isEmpty) {
+                            return 'Please enter a project name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+
+                      TextFormField(
+                        controller: _descController,
+                        maxLines: 4,
+                        style: const TextStyle(
+                          fontFamily: 'Georgia',
+                          color: TH.ink,
+                          fontSize: 14,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'Description (Optional)',
+                          alignLabelWithHint: true,
+                          labelStyle: const TextStyle(
+                              color: TH.ink3, fontWeight: FontWeight.w500),
+                          prefixIcon: const Padding(
+                            padding: EdgeInsets.only(bottom: 60),
+                            child: Icon(Icons.description_rounded, color: softRose),
+                          ),
+                          filled: true,
+                          fillColor: TH.surface1,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: TH.ink4),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+
+                      SizedBox(
+                        height: 54,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: lightRoseGrad,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: softRose.withValues(alpha: 0.35),
+                                blurRadius: 14,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _createProject,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16)),
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white, strokeWidth: 2.5),
+                                  )
+                                : const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.add_rounded, size: 20),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Create Project',
+                                        style: TextStyle(
+                                          fontFamily: 'Georgia',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
-    );
-  }
-}
-
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 16,
-          decoration: BoxDecoration(
-            color: const Color(0xFFE08898),
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          text.toUpperCase(),
-          style: const TextStyle(
-            fontSize: 10.5,
-            fontWeight: FontWeight.w700,
-            color: TH.ink2,
-            letterSpacing: 1.4,
-          ),
-        ),
-      ],
     );
   }
 }
