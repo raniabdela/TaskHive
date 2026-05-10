@@ -50,13 +50,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    const softRose = Color(0xFFBF5A6E);
-    const lightRoseGrad = LinearGradient(
-      colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    );
-
     return Scaffold(
       backgroundColor: TH.canvas,
       body: CustomScrollView(
@@ -65,7 +58,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
           SliverAppBar(
             expandedHeight: 180,
             pinned: true,
-            backgroundColor: softRose,
+            backgroundColor: TH.softRose,
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             iconTheme: const IconThemeData(color: Colors.white),
@@ -83,7 +76,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Container(decoration: const BoxDecoration(gradient: lightRoseGrad)),
+                  Container(decoration: const BoxDecoration(gradient: TH.softRoseGrad)),
                   Positioned(
                     top: -30,
                     right: -30,
@@ -106,7 +99,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              color: softRose, // Background for the corners
+              color: TH.softRose, // Background for the corners
               child: Container(
                 decoration: const BoxDecoration(
                   color: TH.canvas,
@@ -147,28 +140,32 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                         style: const TextStyle(
                           fontFamily: 'Georgia',
                           color: TH.ink,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           fontSize: 15,
                         ),
                         decoration: InputDecoration(
                           labelText: 'Project Name',
                           labelStyle: const TextStyle(
-                              color: TH.ink3, fontWeight: FontWeight.w500),
-                          prefixIcon: const Icon(Icons.folder_rounded, color: softRose),
+                              fontFamily: 'Georgia',
+                              color: TH.ink3, 
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w400),
+                          prefixIcon: const Icon(Icons.folder_rounded, color: TH.softRose),
                           filled: true,
                           fillColor: TH.surface1,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(color: TH.ink4, width: 1),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(color: TH.ink4, width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(color: TH.softRose, width: 1.8),
                           ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
                         validator: (val) {
                           if (val == null || val.trim().isEmpty) {
@@ -185,31 +182,36 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                         style: const TextStyle(
                           fontFamily: 'Georgia',
                           color: TH.ink,
+                          fontWeight: FontWeight.w700,
                           fontSize: 14,
                         ),
                         decoration: InputDecoration(
                           labelText: 'Description (Optional)',
                           alignLabelWithHint: true,
                           labelStyle: const TextStyle(
-                              color: TH.ink3, fontWeight: FontWeight.w500),
+                              fontFamily: 'Georgia',
+                              color: TH.ink3, 
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w400),
                           prefixIcon: const Padding(
                             padding: EdgeInsets.only(bottom: 60),
-                            child: Icon(Icons.description_rounded, color: softRose),
+                            child: Icon(Icons.description_rounded, color: TH.softRose),
                           ),
                           filled: true,
                           fillColor: TH.surface1,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(color: TH.ink4, width: 1),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(color: TH.ink4, width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(color: TH.softRose, width: 1.8),
                           ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
                       ),
                       const SizedBox(height: 40),
@@ -218,11 +220,11 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                         height: 54,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            gradient: lightRoseGrad,
+                            gradient: TH.softRoseGrad,
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: softRose.withValues(alpha: 0.35),
+                                color: TH.softRose.withValues(alpha: 0.35),
                                 blurRadius: 14,
                                 offset: const Offset(0, 6),
                               ),

@@ -46,9 +46,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
       lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
       builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(primary: TH.blush),
-        ),
+        data: Theme.of(
+          context,
+        ).copyWith(colorScheme: const ColorScheme.light(primary: TH.blush)),
         child: child!,
       ),
     );
@@ -79,9 +79,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save task: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save task: $e')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -123,7 +123,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Container(decoration: const BoxDecoration(gradient: lightRoseGrad)),
+                  Container(
+                    decoration: const BoxDecoration(gradient: lightRoseGrad),
+                  ),
                   Positioned(
                     top: -30,
                     right: -30,
@@ -137,8 +139,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     ),
                   ),
                   const Center(
-                    child: Icon(Icons.task_alt_rounded,
-                        color: Colors.white12, size: 80),
+                    child: Icon(
+                      Icons.task_alt_rounded,
+                      color: Colors.white12,
+                      size: 80,
+                    ),
                   ),
                 ],
               ),
@@ -184,7 +189,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 const SizedBox(height: 4),
                                 Text(
                                   'Project: ${widget.projectName}',
-                                  style: const TextStyle(color: TH.ink3, fontSize: 13),
+                                  style: const TextStyle(
+                                    color: TH.ink3,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ],
                             ),
@@ -197,24 +205,49 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       TextFormField(
                         controller: _titleController,
                         style: const TextStyle(
-                            color: TH.ink, fontWeight: FontWeight.w600, fontSize: 15),
+                          fontFamily: 'Georgia',
+                          color: TH.ink,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
                         decoration: InputDecoration(
                           labelText: 'Task Title',
-                          labelStyle: const TextStyle(color: TH.ink3, fontWeight: FontWeight.w500),
-                          prefixIcon: const Icon(Icons.title_rounded, color: softRose),
+                          labelStyle: const TextStyle(
+                            fontFamily: 'Georgia',
+                            color: TH.ink3,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.title_rounded,
+                            color: softRose,
+                          ),
                           filled: true,
                           fillColor: TH.surface1,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: TH.ink4,
+                              width: 1,
+                            ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: TH.ink4,
+                              width: 1,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: softRose,
+                              width: 1.8,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 18,
                           ),
                         ),
                         validator: (val) {
@@ -230,28 +263,54 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       TextFormField(
                         controller: _descController,
                         maxLines: 4,
-                        style: const TextStyle(color: TH.ink, fontSize: 14),
+                        style: const TextStyle(
+                          fontFamily: 'Georgia',
+                          color: TH.ink,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
                         decoration: InputDecoration(
                           labelText: 'Description (Optional)',
                           alignLabelWithHint: true,
-                          labelStyle: const TextStyle(color: TH.ink3, fontWeight: FontWeight.w500),
+                          labelStyle: const TextStyle(
+                            fontFamily: 'Georgia',
+                            color: TH.ink3,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w400,
+                          ),
                           prefixIcon: const Padding(
                             padding: EdgeInsets.only(bottom: 60),
-                            child: Icon(Icons.description_rounded, color: softRose),
+                            child: Icon(
+                              Icons.description_rounded,
+                              color: softRose,
+                            ),
                           ),
                           filled: true,
                           fillColor: TH.surface1,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: TH.ink4,
+                              width: 1,
+                            ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: TH.ink4),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: TH.ink4,
+                              width: 1,
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: softRose, width: 1.8),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: softRose,
+                              width: 1.8,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 18,
                           ),
                         ),
                       ),
@@ -262,7 +321,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         onTap: _pickDeadline,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
                           decoration: BoxDecoration(
                             color: TH.surface1,
                             borderRadius: BorderRadius.circular(16),
@@ -270,8 +331,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.event_rounded,
-                                  color: softRose, size: 20),
+                              const Icon(
+                                Icons.event_rounded,
+                                color: softRose,
+                                size: 20,
+                              ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Column(
@@ -280,22 +344,25 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                     const Text(
                                       'Deadline',
                                       style: TextStyle(
+                                          fontFamily: 'Georgia',
                                           color: TH.ink3,
-                                          fontSize: 11.5,
-                                          fontWeight: FontWeight.w600),
+                                          fontSize: 12.5,
+                                          fontWeight: FontWeight.w400),
                                     ),
                                     const SizedBox(height: 3),
                                     Text(
                                       _selectedDate == null
                                           ? 'Tap to set a deadline'
-                                          : DateFormat('MMM d, yyyy')
-                                              .format(_selectedDate!),
+                                          : DateFormat(
+                                              'MMM d, yyyy',
+                                            ).format(_selectedDate!),
                                       style: TextStyle(
+                                        fontFamily: 'Georgia',
                                         color: _selectedDate == null
                                             ? TH.ink3
                                             : TH.ink,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 15,
+                                        fontSize: 12.5,
                                       ),
                                     ),
                                   ],
@@ -305,7 +372,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 _selectedDate != null
                                     ? Icons.check_circle_rounded
                                     : Icons.chevron_right_rounded,
-                                color: _selectedDate != null ? TH.green : TH.ink3,
+                                color: _selectedDate != null
+                                    ? TH.green
+                                    : TH.ink3,
                               ),
                             ],
                           ),
@@ -323,7 +392,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               items: _priorities,
                               icon: Icons.flag_rounded,
                               onChanged: (val) {
-                                if (val != null) setState(() => _priority = val);
+                                if (val != null)
+                                  setState(() => _priority = val);
                               },
                             ),
                           ),
@@ -364,14 +434,17 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               shadowColor: Colors.transparent,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
                             ),
                             child: _isLoading
                                 ? const SizedBox(
                                     width: 22,
                                     height: 22,
                                     child: CircularProgressIndicator(
-                                        color: Colors.white, strokeWidth: 2.5),
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
                                   )
                                 : const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -424,31 +497,39 @@ class _StyledDropdown extends StatelessWidget {
       value: value,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: TH.ink3, fontWeight: FontWeight.w600),
-        prefixIcon: Icon(icon, color: TH.blush, size: 20),
+        labelStyle: const TextStyle(
+          fontFamily: 'Georgia',
+          color: TH.ink3,
+          fontSize: 12.5,
+          fontWeight: FontWeight.w400,
+        ),
+        prefixIcon: Icon(icon, color: TH.softRose, size: 20),
         filled: true,
         fillColor: TH.surface1,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: TH.ink4),
+          borderRadius: BorderRadius.circular(18),
+          borderSide: const BorderSide(color: TH.ink4, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: TH.ink4),
+          borderRadius: BorderRadius.circular(18),
+          borderSide: const BorderSide(color: TH.ink4, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: TH.blush, width: 1.8),
+          borderRadius: BorderRadius.circular(18),
+          borderSide: const BorderSide(color: TH.softRose, width: 1.8),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(vertical: 18),
       ),
       icon: const Icon(Icons.keyboard_arrow_down_rounded, color: TH.ink3),
       dropdownColor: TH.white,
       style: const TextStyle(
-          color: TH.ink, fontWeight: FontWeight.w700, fontSize: 14),
+        fontFamily: 'Georgia',
+        color: TH.ink,
+        fontWeight: FontWeight.w700,
+        fontSize: 14,
+      ),
       items: items
-          .map((item) =>
-              DropdownMenuItem(value: item, child: Text(item)))
+          .map((item) => DropdownMenuItem(value: item, child: Text(item)))
           .toList(),
       onChanged: onChanged,
     );
