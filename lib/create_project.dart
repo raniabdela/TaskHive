@@ -93,7 +93,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              color: TH.softRose, // Ensures visual continuity during scroll bounce
+              color: TH.softRose, 
               child: Container(
                 decoration: const BoxDecoration(
                   color: TH.canvas,
