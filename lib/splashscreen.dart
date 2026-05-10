@@ -108,15 +108,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: const Text('Sign Up'),
                     ),
                   ),
-                  const SizedBox(height: 28),
-                  SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.6,
-                      color: color.withValues(alpha: 0.85),
-                    ),
-                  ),
                 ],
               ),
             ),
