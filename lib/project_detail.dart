@@ -47,59 +47,121 @@ class _ProjectDetailPageState extends State<ProjectDetailPage>
         elevation: 0,
         iconTheme: const IconThemeData(color: TH.ink),
         titleSpacing: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.projectName,
-              style: const TextStyle(
-                fontFamily: 'Georgia',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: TH.ink,
-                letterSpacing: -0.4,
-              ),
-            ),
-            const Text(
-              'Project Board',
-              style: TextStyle(
-                  fontSize: 12, color: TH.ink3, fontWeight: FontWeight.w500),
-            ),
-          ],
+        title: const Text(
+          'Project Details',
+          style: TextStyle(
+            fontFamily: 'Georgia',
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: TH.ink,
+            letterSpacing: -0.5,
+          ),
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            decoration: BoxDecoration(
-              color: TH.surface1,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: TH.ink4),
-            ),
-            child: TabBar(
-              controller: _tabController,
-              tabs: _statuses
-                  .map((s) => Tab(
-                        child: Text(
-                          s,
-                          style: const TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w700,
+          preferredSize: const Size.fromHeight(160),
+          child: Column(
+            children: [
+              // Hero Card
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFBF5A6E).withValues(alpha: 0.35),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.25),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.5)),
+                      ),
+                      child: const Icon(Icons.folder_special_rounded,
+                          color: Colors.white, size: 24),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.projectName,
+                            style: const TextStyle(
+                              fontFamily: 'Georgia',
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                              letterSpacing: -0.3,
+                            ),
                           ),
-                        ),
-                      ))
-                  .toList(),
-              indicator: BoxDecoration(
-                gradient: TH.blushGrad,
-                borderRadius: BorderRadius.circular(11),
-                boxShadow: TH.floatShadow,
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Manage your tasks and progress.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              indicatorPadding: const EdgeInsets.all(3),
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: Colors.white,
-              unselectedLabelColor: TH.ink2,
-              dividerColor: Colors.transparent,
-            ),
+              const SizedBox(height: 16),
+              // TabBar
+              Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                decoration: BoxDecoration(
+                  color: TH.surface1,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: TH.ink4),
+                ),
+                child: TabBar(
+                  controller: _tabController,
+                  tabs: _statuses
+                      .map((s) => Tab(
+                            child: Text(
+                              s,
+                              style: const TextStyle(
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  indicator: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFD4758A), Color(0xFFBF5A6E)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(11),
+                    boxShadow: TH.floatShadow,
+                  ),
+                  indicatorPadding: const EdgeInsets.all(3),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: TH.ink2,
+                  dividerColor: Colors.transparent,
+                ),
+              ),
+            ],
           ),
         ),
       ),
