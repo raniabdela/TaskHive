@@ -41,6 +41,7 @@ class _SignupPageState extends State<SignupPage> {
     final password = _passwordController.text;
 
     try {
+      // Logic: Firebase Authentication call to create a new user account
       final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -50,6 +51,8 @@ class _SignupPageState extends State<SignupPage> {
       if (uid != null) {
         await cred.user?.updateDisplayName(name);
         await FirebaseAuth.instance.currentUser?.reload();
+        
+        // Logic: Firestore persistence layer creating a user profile document
         await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'uid': uid,
           'name': name,
@@ -83,6 +86,7 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+  // Logic: Dynamic input decoration helper for consistent field styling
   InputDecoration _inputDecoration({
     required String label,
     required IconData icon,
@@ -276,6 +280,7 @@ class _SignupPageState extends State<SignupPage> {
                               width: double.infinity,
                               height: 52,
                               child: ElevatedButton(
+                                // Logic: Primary submission trigger for account creation
                                 onPressed: _signup,
                                 child: const Text('Sign Up'),
                               ),
@@ -293,7 +298,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
