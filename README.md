@@ -17,3 +17,31 @@ TaskHive is a Flutter-based mobile application designed to help teams organize p
 - Real-time updates using Firebase.
 
 ---
+## 🧭 App Navigation
+
+After login, users access a bottom navigation system with four main sections:
+
+- Dashboard (overview of tasks and progress)
+- Projects (list of all projects)
+- Tasks (all tasks across projects)
+- Profile (user account details)
+
+---
+
+## 🗄 Backend
+
+The app uses Firebase services:
+
+- Firebase Authentication (user login & signup)
+- Firebase Firestore (data storage)
+- Firebase Storage (for profile images)
+
+### Firestore Structure
+
+- users
+- projects
+- tasks
+  - subcollection: comments
+
+Each task belongs to a project and can have multiple comments for collaboration.
+
